@@ -85,7 +85,7 @@ function SchoolNameList({
 
       {schoolname && (
         <StyledDiv>
-          {serverschoolnamelist.map((school) => {
+          {(serverschoolnamelist || []).map((school) => {
             return (
               <SchoolName
                 selected={school.id === selectedSchoolId}

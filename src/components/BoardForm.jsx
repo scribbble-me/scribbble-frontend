@@ -54,7 +54,7 @@ function BoardForm() {
   const [url, setUrl] = useState("");
   const [userdata, setUserData] = useState(null);
 
-  const tempid = "22e8726c-e82a-4c26-a4ca-45ee757459f0";
+  const tempid = "401505a1-ad19-40ac-bbed-60ed3da4e67f";
 
   const formalurl = "https://api.scribbble.me/api/members/";
 
@@ -64,20 +64,18 @@ function BoardForm() {
 
   const targeturlheart = targeturl + "/hearts";
 
-  // useEffect(() => {
-  //   setUrl(window.location.href);
-  //   axios
-  //     .get(targeturl, { params: { memberId: tempid } })
-  //     .then(function (response) {
-  //       console.log(response);
-  //       console.log(response.data);
-  //       setUserData(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //       // alert(error.response.data.message);
-  //     });
-  // }, []);
+  function handleHeartClick() {
+    axios
+      .post(membermeurl, { withCredentials: true })
+      .then(function (response) {
+        console.log(response);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        // alert(error.response.data.message);
+      });
+  }
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -123,6 +121,7 @@ function BoardForm() {
   return (
     <>
       <BackgroundImg>
+        <div onClick={handleHeartClick}>adsfasdf</div>
         <ColumnFlexdiv>
           {" "}
           <Div100>

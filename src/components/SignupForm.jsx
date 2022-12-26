@@ -42,10 +42,10 @@ function SignupForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [schoolname, setSchoolname] = useState(null);
-  const [selectedschoolname, setSelectedSchoolname] = useState(null);
-  const [serverschoolnamelist, setServerSchoolNameList] = useState(null);
-  const [schoolId, setSchoolId] = useState(null);
+  const [schoolname, setSchoolname] = useState("");
+  const [selectedschoolname, setSelectedSchoolname] = useState(-1);
+  const [serverschoolnamelist, setServerSchoolNameList] = useState([]);
+  const [schoolId, setSchoolId] = useState(-1);
 
   const navigate = useNavigate();
 
@@ -68,17 +68,13 @@ function SignupForm() {
     console.log("asdf");
     axios
       // .post("http://139.162.114.119:8080/api/auth", { email, password })
-      .get(
-        "https://api.scribbble.me/api/schools",
-        {
-          params: { query: schoolname },
-        },
-        { withCredentials: true }
-      )
+      .get("https://api.scribbble.me/api/schools", {
+        params: { query: schoolname },
+      })
       .then(function (response) {
         // console.log(response);
 
-        // console.log(response.data);
+        console.log("TEST", response.data);
         setServerSchoolNameList(response.data);
       })
       .catch(function (error) {
@@ -88,7 +84,7 @@ function SignupForm() {
   }, [schoolname]);
 
   useEffect(() => {
-    console.log(serverschoolnamelist);
+    console.log("ServerSchoolNameList", serverschoolnamelist);
   }, [serverschoolnamelist]);
 
   function handleMaking() {
@@ -102,13 +98,13 @@ function SignupForm() {
       .post("https://api.scribbble.me/api/members", {
         email,
         password,
-        schoolId,
+        schoolId: selectedschoolname,
         username,
       })
       .then(function (response) {
         console.log(response);
         console.log(response.data);
-        navigate(`/board`);
+        navigate(`/`);
       })
       .catch(function (error) {
         console.log(error);
