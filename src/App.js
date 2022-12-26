@@ -29,7 +29,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
-        <Route path="/board" element={<BoardForm />} />
+        <Route path="/heart/:userId" element={<BoardForm />} />
         <Route path="/ranking" element={<RankingForm />} />
         {/* <Route path="/message1" element={<Message1 />} />
         <Route path="/message2" element={<Message2 />} /> */}

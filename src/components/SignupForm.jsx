@@ -112,7 +112,11 @@ function SignupForm() {
         <InputText innertext="이메일 주소" />
         <Textbox placeholder="" onChange={handleEmailChange} />
         <InputText innertext="비밀번호" />
-        <Textbox placeholder="" onChange={handlePasswordChange} />
+        <Textbox
+          placeholder=""
+          type="password"
+          onChange={handlePasswordChange}
+        />
         <InputText innertext="닉네임" />
         <Textbox placeholder="" onChange={handleUsername} />
         <InputText innertext="학교검색" />

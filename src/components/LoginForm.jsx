@@ -5,7 +5,7 @@ import Button from "./Button";
 import RecoveryPassword from "./RecoveryPassword";
 import BlackboardImg from "./BlackboardImg";
 // import BackgroundImg from "./BackgroundImg";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
 import InputText from "./InputText";
 import BackgroundImg from "./BackgroundImg";
 import StyledLink from "./StyledLink";
@@ -32,6 +32,7 @@ const StyledMain = styled.main`
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userid, setUserId] = useState("");
 
   const navigate = useNavigate();
 
@@ -50,6 +51,19 @@ function LoginForm() {
     setPassword(e.target.value);
   }
 
+  function logincheck(callback) {
+    axios
+      .get("https://api.scribbble.me/api/members/me", { withCredentials: true })
+      .then(function (response) {
+        console.log("userid is", response.data.id);
+        callback(`/heart/${response.data.id}`);
+      })
+      .catch(function (error) {
+        // console.log(error);
+        alert(error.response.data.message);
+      });
+  }
+
   function handleLogin() {
     axios
       // .post("http://139.162.114.119:8080/api/auth", { email, password })
@@ -62,8 +76,7 @@ function LoginForm() {
         { withCredentials: true }
       )
       .then(function (response) {
-        // console.log(response);
-        navigate(`/board`);
+        logincheck(navigate);
       })
       .catch(function (error) {
         // console.log(error);

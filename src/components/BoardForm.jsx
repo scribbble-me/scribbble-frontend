@@ -16,7 +16,7 @@ import axios from "axios";
 import { ReactComponent as Ranking } from "../trophy-svgrepo-com (1).svg";
 import { ReactComponent as Menu } from "../menu-svgrepo-com.svg";
 
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useParams } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 
@@ -52,6 +52,8 @@ const schoolname = "동수초등학교";
 const ranking = "32";
 
 function BoardForm() {
+  let { userId } = useParams();
+
   const [url, setUrl] = useState("");
   const [userdata, setUserData] = useState({
     id: "",
@@ -66,9 +68,9 @@ function BoardForm() {
 
   const formalurl = "https://api.scribbble.me/api/members/";
 
-  const membermeurl = "https://api.scribbble.me/api/members/me";
+  const membermeurl = `https://api.scribbble.me/api/members/${userId}`;
 
-  const myrankingurl = "https://api.scribbble.me/api/ranking/my-ranking";
+  const myrankingurl = `https://api.scribbble.me/api/ranking/members/${userId}`;
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -125,6 +127,10 @@ function BoardForm() {
     await navigator.clipboard.writeText(url);
     alert("주소가 클립보드에 복사되었습니다");
   };
+
+  let { params } = useParams();
+
+  console.log("adsf", params);
 
   return (
     <>

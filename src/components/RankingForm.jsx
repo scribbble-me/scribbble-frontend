@@ -40,23 +40,34 @@ function RankingForm() {
   const [userHeartCount, setUserHeartCount] = useState({});
   console.log({ userHeartCount });
 
-  const schoolId = 2066;
   const [rankinglist, setRankingList] = useState([]);
-  const [schoolname, setSchoolName] = useState("");
-  // const [rankinglistmore, setRankingListMore] = useState([]);
+  const [schoolId, setSchoolId] = useState(0);
+  const [schoolName, setSchoolName] = useState("");
+  const [userId, setUserId] = useState("");
 
-  const rankingurl =
-    "https://api.scribbble.me/api/ranking/schools" + "/" + schoolId;
+  const membermeurl = "https://api.scribbble.me/api/members/me";
+  const myheartlink = `/heart/${userId}`;
 
   useEffect(() => {
+    axios // 초기 유저 정보 가져오기
+      .get(membermeurl, { withCredentials: true }) //member/me
+      .then((response) => {
+        setSchoolId(response.data.school.id);
+        setSchoolName(response.data.school.name);
+        setUserId(response.data.id);
+      })
+      .catch((error) => {}, []);
+  }, []);
+
+  useEffect(() => {
+    console.log("schoolid is", schoolId);
+    const rankingurl = `https://api.scribbble.me/api/ranking/schools/${schoolId}`;
     axios
       // .post("http://139.162.114.119:8080/api/auth", { email, password })
-      .get(rankingurl, {
-        schoolId,
-      })
+      .get(rankingurl)
       .then(function (response) {
-        // console.log(response);
-        // console.log("TEST", response.data);
+        console.log(response);
+        console.log("TEST", response.data);
         setRankingList(response.data);
         setSchoolName(rankinglist.school.name);
       })
@@ -64,7 +75,7 @@ function RankingForm() {
         console.log(error);
         // alert(error.response.data.message);
       });
-  }, []);
+  }, [schoolId]);
 
   useEffect(() => {
     if (rankinglist !== null && rankinglist.length > 0) {
@@ -93,16 +104,19 @@ function RankingForm() {
 
         {rankinglist.map((eachuser, index) => {
           console.warn(userHeartCount[eachuser.id]);
+          const eachlink = `/heart/${eachuser.id}`;
 
           return (
-            <RankingBlock // 뭔소린지 모르갯다 ㅋㅋ 물속에 있는거 같음 ㅋㅋ1
-              rankingnumber={index + 1}
-              rankingusername={eachuser.username}
-              rankinglikenumber={userHeartCount[eachuser.id]}
-            />
+            <StyledLink to={eachlink}>
+              <RankingBlock // 뭔소린지 모르갯다 ㅋㅋ 물속에 있는거 같음 ㅋㅋ1
+                rankingnumber={index + 1}
+                rankingusername={eachuser.username}
+                rankinglikenumber={userHeartCount[eachuser.id]}
+              />
+            </StyledLink>
           );
         })}
-        <StyledLink to="/board">
+        <StyledLink to={myheartlink}>
           <Button
             buttonName="내 하트 보러가기"
             bgcolor="yellow"
