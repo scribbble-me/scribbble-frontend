@@ -13,15 +13,22 @@ const StyledInput = styled.input`
   margin-bottom: 25px;
 `;
 
-function Textbox({ placeholder, onChange }) {
+function Textbox({ placeholder, onChange, type, onKeyPress }) {
   const [value, setValue] = useState("");
   function handleChange(e) {
     setValue(e.target.value);
-    console.log(value);
+    // console.log(value);
     onChange(e);
   }
 
-  return <StyledInput placeholder={placeholder} onChange={handleChange} />;
+  return (
+    <StyledInput
+      placeholder={placeholder}
+      onChange={handleChange}
+      type={type}
+      onKeyPress={onKeyPress}
+    />
+  );
 }
 
 export default Textbox;

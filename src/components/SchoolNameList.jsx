@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import SchoolName from "./SchoolName";
 import { useState } from "react";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+
+import axios from "axios";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -22,7 +25,11 @@ const schoolData = [
   },
   {
     id: 4,
-    name: "dddd",
+    name: "ddddd",
+  },
+  {
+    id: 5,
+    name: "ddsdfdddd",
   },
 ];
 
@@ -43,10 +50,22 @@ const schoolData0 = [
     id: 4,
     name: "4",
   },
+  {
+    id: 5,
+    name: "5",
+  },
 ];
 
-function SchoolNameList({ schoolname }) {
+const empylist = [];
+
+function SchoolNameList({
+  schoolname,
+  setSelectedSchoolname,
+  serverschoolnamelist,
+}) {
   const [selectedSchoolId, setSelectedSchoolId] = useState(null);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -66,12 +85,28 @@ function SchoolNameList({ schoolname }) {
 
       {schoolname && (
         <StyledDiv>
-          {schoolData.map((school) => {
+          {serverschoolnamelist.map((school) => {
             return (
               <SchoolName
                 selected={school.id === selectedSchoolId}
                 schoolname={school.name}
-                onClick={() => setSelectedSchoolId(school.id)}
+                onClick={() => {
+                  setSelectedSchoolId(school.id);
+                  setSelectedSchoolname(school.id);
+                  // axios
+                  //   // .post("http://139.162.114.119:8080/api/auth", { email, password })
+                  //   .get("https://api.scribbble.me/api/schools", {
+                  //     params: "대명",
+                  //   })
+                  //   .then(function (response) {
+                  //     console.log(response);
+                  //     navigate(`/board`);
+                  //   })
+                  //   .catch(function (error) {
+                  //     console.log(error);
+                  //     alert(error.response.data.message);
+                  //   });
+                }}
                 dummy={false}
               />
             );

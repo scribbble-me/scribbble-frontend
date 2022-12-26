@@ -9,8 +9,26 @@ const StyledImg = styled.img`
   align-self: center;
 `;
 
+const StyledImg2 = styled.img`
+  height: 7.1825rem;
+  width: 9.5rem;
+  margin: 1.5rem 0px;
+  align-self: center;
+`;
+
 function HeartAnimationed() {
-  return <StyledImg src={blackboard} />;
+  const [shake, setShake] = useState(false);
+
+  // return <StyledImg src={blackboard} onClick={() => setShake(1)} onAnimationEnd={() => setShake(1)}  />;
+  function handleOnClick(e) {
+    shake == true ? setShake(false) : setShake(true);
+  }
+  return (
+    <>
+      {shake && <StyledImg2 src={blackboard} onClick={handleOnClick} />}
+      {!shake && <StyledImg src={blackboard} onClick={handleOnClick} />}
+    </>
+  );
 }
 
 export default HeartAnimationed;

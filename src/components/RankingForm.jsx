@@ -19,37 +19,37 @@ const rankingdata = [
   {
     id: 1,
     rank: 1,
-    name: "조동현",
+    name: "이몽룡",
     likenumber: 1213,
   },
   {
     id: 2,
     rank: 2,
-    name: "이정식",
+    name: "성춘향",
     likenumber: 1113,
   },
   {
     id: 3,
     rank: 3,
-    name: "이성인",
+    name: "망나니",
     likenumber: 903,
   },
   {
     id: 4,
     rank: 4,
-    name: "이태인",
+    name: "변사또",
     likenumber: 270,
   },
   {
     id: 5,
     rank: 5,
-    name: "황태영",
+    name: "개똥이",
     likenumber: 121,
   },
   {
     id: 6,
     rank: 6,
-    name: "황태영",
+    name: "방자",
     likenumber: 121,
   },
 ];
@@ -89,6 +89,13 @@ function RankingForm() {
             />
           );
         })}
+        <StyledLink to="/board">
+          <Button
+            buttonName="내 하트 보러가기"
+            bgcolor="yellow"
+            textcolor="black"
+          />
+        </StyledLink>
       </StyledMain>
     </BackgroundImg>
   );

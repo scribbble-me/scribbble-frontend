@@ -8,8 +8,8 @@ const StyledImg = styled.img`
   align-self: center;
 `;
 
-function BlackboardImg() {
-  return <StyledImg src={blackboard} />;
+function BlackboardImg(onClick) {
+  return <StyledImg src={blackboard} onClick={onClick} />;
 }
 
 export default BlackboardImg;
