@@ -16,12 +16,13 @@ const StyledImg2 = styled.img`
   align-self: center;
 `;
 
-function HeartAnimationed() {
+function HeartAnimationed(onClick) {
   const [shake, setShake] = useState(false);
 
   // return <StyledImg src={blackboard} onClick={() => setShake(1)} onAnimationEnd={() => setShake(1)}  />;
   function handleOnClick(e) {
     shake == true ? setShake(false) : setShake(true);
+    // onClick;
   }
   return (
     <>

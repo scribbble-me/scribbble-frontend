@@ -42,6 +42,11 @@ const Div100 = styled.div`
   width: 100%;
 `;
 
+const Div100center = styled.div`
+  width: 100%;
+  text-align: center;
+`;
+
 const numberoflike = "15";
 const schoolname = "동수초등학교";
 const ranking = "32";
@@ -65,8 +70,9 @@ function BoardForm() {
   const targeturlheart = targeturl + "/hearts";
 
   function handleHeartClick() {
+    console.log(targeturlheart);
     axios
-      .post(membermeurl, { withCredentials: true })
+      .post(targeturlheart, { withCredentials: true })
       .then(function (response) {
         console.log(response);
         console.log(response.data);
@@ -121,7 +127,6 @@ function BoardForm() {
   return (
     <>
       <BackgroundImg>
-        <div onClick={handleHeartClick}>adsfasdf</div>
         <ColumnFlexdiv>
           {" "}
           <Div100>
@@ -151,7 +156,9 @@ function BoardForm() {
               fontsize={"0.8rem"}
             />
           </Div100>
-          <HeartAnimationed />
+          <Div100center onClick={handleHeartClick}>
+            <HeartAnimationed />
+          </Div100center>
           <StyledLink to="/signup">
             <Button
               buttonName="나도 하트 만들기"
