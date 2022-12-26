@@ -67,7 +67,6 @@ function SignupForm() {
     console.log(schoolname);
     console.log("asdf");
     axios
-      // .post("http://139.162.114.119:8080/api/auth", { email, password })
       .get("https://api.scribbble.me/api/schools", {
         params: { query: schoolname },
       })
@@ -79,7 +78,6 @@ function SignupForm() {
       })
       .catch(function (error) {
         console.log(error);
-        // alert(error.response.data.message);
       });
   }, [schoolname]);
 
@@ -89,12 +87,7 @@ function SignupForm() {
 
   function handleMaking() {
     axios
-      // .post("https://api.scribbble.me/api/members", {
-      //   email: "abcde@naver.com",
-      //   password: "abcde12345",
-      //   schoolId: 33,
-      //   username: "모발모발",
-      // })
+
       .post("https://api.scribbble.me/api/members", {
         email,
         password,
@@ -111,10 +104,6 @@ function SignupForm() {
         alert(error.response.data.message);
       });
   }
-
-  // useEffect(() => {
-  //   console.log(schoolname);
-  // }, [schoolname]);
 
   return (
     <BackgroundImg>
@@ -133,16 +122,12 @@ function SignupForm() {
           <SchoolNameList
             schoolname={schoolname}
             setSelectedSchoolname={setSelectedSchoolname}
-            // serverschoolnamelist={schoolData123}
             serverschoolnamelist={serverschoolnamelist}
           />
         )}
       </div>
 
-      {/* <StyledLink to="/board">
-        <Button buttonName="칠판 만들기" onClick={handleMaking} />
-      </StyledLink> */}
-      <Button buttonName="칠판 만들기" onClick={handleMaking} />
+      <Button buttonName="하트 만들기" onClick={handleMaking} />
     </BackgroundImg>
   );
 }

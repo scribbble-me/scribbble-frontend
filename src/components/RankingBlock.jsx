@@ -38,6 +38,7 @@ function RankingBlock({ rankingnumber, rankingusername, rankinglikenumber }) {
           <HeartDiv>
             <BsFillSuitHeartFill size={"15px"} color={"red"} />
           </HeartDiv>
+          {console.log("rankingnumber is ", rankinglikenumber)}
           <RankingLikeNumber rankinglikenumber={rankinglikenumber} />
         </FlexRow>
       </FlexColumn>

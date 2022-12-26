@@ -10,49 +10,11 @@ import InputText from "./InputText";
 import BackgroundImg from "./BackgroundImg";
 import StyledLink from "./StyledLink";
 import RankingBlock from "./RankingBlock";
+import axios from "axios";
 
 import RankingNumber from "./RankingNumber";
 
-import { useState } from "react";
-
-const rankingdata = [
-  {
-    id: 1,
-    rank: 1,
-    name: "이몽룡",
-    likenumber: 1213,
-  },
-  {
-    id: 2,
-    rank: 2,
-    name: "성춘향",
-    likenumber: 1113,
-  },
-  {
-    id: 3,
-    rank: 3,
-    name: "망나니",
-    likenumber: 903,
-  },
-  {
-    id: 4,
-    rank: 4,
-    name: "변사또",
-    likenumber: 270,
-  },
-  {
-    id: 5,
-    rank: 5,
-    name: "개똥이",
-    likenumber: 121,
-  },
-  {
-    id: 6,
-    rank: 6,
-    name: "방자",
-    likenumber: 121,
-  },
-];
+import { useEffect, useState } from "react";
 
 const StyledMain = styled.main`
   width: 100%;
@@ -75,17 +37,68 @@ const TitleText = styled.text`
 `;
 
 function RankingForm() {
+  const [userHeartCount, setUserHeartCount] = useState({});
+  console.log({ userHeartCount });
+
+  const schoolId = 2066;
+  const [rankinglist, setRankingList] = useState([]);
+  const [schoolname, setSchoolName] = useState("");
+  // const [rankinglistmore, setRankingListMore] = useState([]);
+
+  const rankingurl =
+    "https://api.scribbble.me/api/ranking/schools" + "/" + schoolId;
+
+  useEffect(() => {
+    axios
+      // .post("http://139.162.114.119:8080/api/auth", { email, password })
+      .get(rankingurl, {
+        schoolId,
+      })
+      .then(function (response) {
+        // console.log(response);
+        // console.log("TEST", response.data);
+        setRankingList(response.data);
+        setSchoolName(rankinglist.school.name);
+      })
+      .catch(function (error) {
+        console.log(error);
+        // alert(error.response.data.message);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (rankinglist !== null && rankinglist.length > 0) {
+      const promises = rankinglist.map((user) => {
+        const getheartcounturl = `https://api.scribbble.me/api/members/${user.id}/hearts`;
+        return axios.get(getheartcounturl, { withCredentials: true });
+      });
+
+      Promise.all(promises).then((respones) => {
+        const heartCounts = {};
+        respones.forEach((response) => {
+          const { count, memberId } = response.data;
+          heartCounts[memberId] = count;
+        });
+
+        setUserHeartCount(heartCounts);
+      });
+    }
+  }, [rankinglist]);
+
   return (
     <BackgroundImg>
       <StyledMain>
-        <TitleText>Top 랭킹</TitleText>
+        <TitleText>{"Top 랭킹"}</TitleText>
+        {/* <TitleText>{schoolname + "Top 랭킹"}</TitleText> */}
 
-        {rankingdata.map((eachuser) => {
+        {rankinglist.map((eachuser, index) => {
+          console.warn(userHeartCount[eachuser.id]);
+
           return (
-            <RankingBlock
-              rankingnumber={eachuser.rank}
-              rankingusername={eachuser.name}
-              rankinglikenumber={eachuser.likenumber}
+            <RankingBlock // 뭔소린지 모르갯다 ㅋㅋ 물속에 있는거 같음 ㅋㅋ1
+              rankingnumber={index + 1}
+              rankingusername={eachuser.username}
+              rankinglikenumber={userHeartCount[eachuser.id]}
             />
           );
         })}

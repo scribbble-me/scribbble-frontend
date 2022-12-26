@@ -52,62 +52,72 @@ const schoolname = "동수초등학교";
 const ranking = "32";
 
 function BoardForm() {
-  const [username, setUserName] = useState("default");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rankingshow, setRankingshow] = useState(false);
   const [url, setUrl] = useState("");
-  const [userdata, setUserData] = useState(null);
+  const [userdata, setUserData] = useState({
+    id: "",
+    school: { id: -1, name: "" },
+    username: "",
+  });
+  const [heartcount, setHeartCount] = useState(0);
+  const [userranking, setUserRanking] = useState(-1);
 
-  const tempid = "401505a1-ad19-40ac-bbed-60ed3da4e67f";
+  // const tempid2 = "2ea3cb70-2490-4c2f-a037-6841f7b52374";
+  // const tempid = "401505a1-ad19-40ac-bbed-60ed3da4e67f";
 
   const formalurl = "https://api.scribbble.me/api/members/";
 
   const membermeurl = "https://api.scribbble.me/api/members/me";
 
-  const targeturl = formalurl + tempid;
-
-  const targeturlheart = targeturl + "/hearts";
-
-  function handleHeartClick() {
-    console.log(targeturlheart);
-    axios
-      .post(targeturlheart, { withCredentials: true })
-      .then(function (response) {
-        console.log(response);
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        // alert(error.response.data.message);
-      });
-  }
+  const myrankingurl = "https://api.scribbble.me/api/ranking/my-ranking";
 
   useEffect(() => {
     setUrl(window.location.href);
-    // axios
-    //   .get(targeturl, { params: { memberId: tempid } })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     console.log(response.data);
-    //     setUserData(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //     // alert(error.response.data.message);
-    //   });
-    axios
-      .get(membermeurl, { withCredentials: true })
-      .then(function (response) {
-        console.log(response);
-        console.log(response.data);
+    axios // 초기 유저 정보 가져오기
+      .get(membermeurl, { withCredentials: true }) //member/me
+      .then((response) => {
         setUserData(response.data);
+      })
+      .catch((error) => {}, []);
+  }, []);
+
+  useEffect(fetchRanking, [userdata]);
+
+  useEffect(fetchHeartCount, [userdata]);
+
+  function handleHeartClick() {
+    const targeturl = formalurl + userdata.id + "/hearts";
+
+    axios
+      .post(targeturl, { withCredentials: true })
+      .then(function () {
+        fetchRanking();
+        fetchHeartCount();
       })
       .catch(function (error) {
         console.log(error);
-        // alert(error.response.data.message);
       });
-  }, []);
+  }
+
+  function fetchRanking() {
+    axios // 유저 등수 가져오기
+      .get(myrankingurl, { withCredentials: true })
+      .then(function (response) {
+        const { ranking } = response.data;
+        setUserRanking(ranking);
+      })
+      .catch(function (error) {});
+  }
+
+  function fetchHeartCount() {
+    const getheartcounturl = `https://api.scribbble.me/api/members/${userdata.id}/hearts`;
+    axios // 하트 수 가져오기
+      .get(getheartcounturl, { withCredentials: true })
+      .then(function (response) {
+        const { count } = response.data;
+        setHeartCount(count);
+      })
+      .catch(function (error) {});
+  }
 
   const copy = async () => {
     // console.log(window.location.pathname);
@@ -115,14 +125,6 @@ function BoardForm() {
     await navigator.clipboard.writeText(url);
     alert("주소가 클립보드에 복사되었습니다");
   };
-
-  function handleEmailChange(e) {
-    setEmail(e.target.value);
-  }
-
-  function handlePasswordChange(e) {
-    setPassword(e.target.value);
-  }
 
   return (
     <>
@@ -132,9 +134,7 @@ function BoardForm() {
           <Div100>
             <RowFlexdiv>
               <GeneralText
-                // innertext={userdata.username + "님의 좋아요"}
-                innertext={username + "님의 좋아요"}
-                // fontsize={"1.625rem"}
+                innertext={userdata.username + "님의 좋아요"}
                 fontsize={"1.625rem"}
               />
               <RowFlexEndDiv>
@@ -146,12 +146,14 @@ function BoardForm() {
               </RowFlexEndDiv>
             </RowFlexdiv>
             <GeneralText
-              innertext={numberoflike + "개의 좋아요를 받았어요"}
+              innertext={heartcount + "개의 좋아요를 받았어요"}
               fontsize={"0.8rem"}
             />
             <GeneralText
               // innertext={"(" + userdata.school.name + "에서 " + ranking + "등)"}
-              innertext={"(" + schoolname + "에서 " + ranking + "등)"}
+              innertext={
+                "(" + userdata.school.name + "에서 " + userranking + "등)"
+              }
               owntext={15}
               fontsize={"0.8rem"}
             />
