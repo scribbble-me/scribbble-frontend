@@ -62,6 +62,7 @@ function BoardForm() {
   });
   const [heartcount, setHeartCount] = useState(0);
   const [userranking, setUserRanking] = useState(-1);
+  const [schoolId, setSchoolId] = useState("");
 
   // const tempid2 = "2ea3cb70-2490-4c2f-a037-6841f7b52374";
   // const tempid = "401505a1-ad19-40ac-bbed-60ed3da4e67f";
@@ -71,6 +72,10 @@ function BoardForm() {
   const membermeurl = `https://api.scribbble.me/api/members/${userId}`;
 
   const myrankingurl = `https://api.scribbble.me/api/ranking/members/${userId}`;
+
+  const rankinglink = `/ranking/${userdata.school.id}`;
+
+  console.log("rankingLink is ", rankinglink);
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -144,7 +149,7 @@ function BoardForm() {
                 fontsize={"1.625rem"}
               />
               <RowFlexEndDiv>
-                <StyledLink to="/ranking">
+                <StyledLink to={rankinglink}>
                   <CgTrophy size="32" color="white" />
                 </StyledLink>
 

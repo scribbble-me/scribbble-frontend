@@ -15,6 +15,7 @@ import axios from "axios";
 import RankingNumber from "./RankingNumber";
 
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const StyledMain = styled.main`
   width: 100%;
@@ -37,11 +38,12 @@ const TitleText = styled.text`
 `;
 
 function RankingForm() {
+  let { schoolId } = useParams();
+
   const [userHeartCount, setUserHeartCount] = useState({});
   console.log({ userHeartCount });
 
   const [rankinglist, setRankingList] = useState([]);
-  const [schoolId, setSchoolId] = useState(0);
   const [schoolName, setSchoolName] = useState("");
   const [userId, setUserId] = useState("");
 
@@ -52,8 +54,7 @@ function RankingForm() {
     axios // 초기 유저 정보 가져오기
       .get(membermeurl, { withCredentials: true }) //member/me
       .then((response) => {
-        setSchoolId(response.data.school.id);
-        setSchoolName(response.data.school.name);
+        // setSchoolId(response.data.school.id);
         setUserId(response.data.id);
       })
       .catch((error) => {}, []);
@@ -69,13 +70,14 @@ function RankingForm() {
         console.log(response);
         console.log("TEST", response.data);
         setRankingList(response.data);
-        setSchoolName(rankinglist.school.name);
+        setSchoolName(response.data[0].school.name);
       })
       .catch(function (error) {
+        console.log("it's error");
         console.log(error);
         // alert(error.response.data.message);
       });
-  }, [schoolId]);
+  }, []);
 
   useEffect(() => {
     if (rankinglist !== null && rankinglist.length > 0) {
@@ -99,7 +101,7 @@ function RankingForm() {
   return (
     <BackgroundImg>
       <StyledMain>
-        <TitleText>{"Top 랭킹"}</TitleText>
+        <TitleText>{`${schoolName} Top 랭킹`}</TitleText>
         {/* <TitleText>{schoolname + "Top 랭킹"}</TitleText> */}
 
         {rankinglist.map((eachuser, index) => {
